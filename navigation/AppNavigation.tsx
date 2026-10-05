@@ -1,11 +1,15 @@
 import React from 'react';
+import { useColorScheme } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/Home';
 import ChatScreen from '../screens/Chat';
 import ProfileScreen from '../screens/Profile';
-import { RootStackParamList } from '../types';
-import { createStaticNavigation, DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { useColorScheme } from 'react-native';
+import type { RootStackParamList } from '../types';
+import {
+  createStaticNavigation,
+  DarkTheme,
+  DefaultTheme
+} from '@react-navigation/native';
 import SettingsScreen from '../screens/Settings';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>({
@@ -23,9 +27,7 @@ const Navigation = createStaticNavigation(RootStack);
 const AppNavigation = () => {
   const scheme = useColorScheme();
 
-  return (
-    <Navigation theme={scheme === 'dark' ? DarkTheme : DefaultTheme} />
-  );
+  return <Navigation theme={scheme === 'dark' ? DarkTheme : DefaultTheme} />;
 };
 
 export default AppNavigation;

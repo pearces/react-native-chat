@@ -4,3 +4,10 @@ export type RootStackParamList = {
   Profile: { userId: string };
   Settings: undefined;
 };
+
+export type Message = {
+  id: string;
+  sender: 'me' | 'them';
+  text: string;
+  sent: number;
+};

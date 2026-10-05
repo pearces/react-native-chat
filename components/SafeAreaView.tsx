@@ -1,23 +1,44 @@
-import React from 'react';
-import { View, StyleSheet, ViewProps } from 'react-native';
+import React, { type ReactNode } from 'react';
+import { View, type ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import clsx from 'clsx';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 interface SafeAreaViewProps extends ViewProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  edges?: ('top' | 'bottom' | 'left' | 'right')[];
+  className?: string;
 }
 
-const SafeAreaView = ({ children, style, ...props }: SafeAreaViewProps) => {
+const SafeAreaView = ({
+  children,
+  className,
+  style,
+  edges = ['top', 'bottom'],
+  ...props
+}: SafeAreaViewProps) => {
   const insets = useSafeAreaInsets();
+  const headerHeight = useHeaderHeight();
+
+  const paddingTop = edges.includes('top')
+    ? headerHeight > 0
+      ? 0
+      : insets.top
+    : 0;
+
+  const paddingBottom = edges.includes('bottom') ? insets.bottom : 0;
+  const paddingLeft = edges.includes('left') ? insets.left : 0;
+  const paddingRight = edges.includes('right') ? insets.right : 0;
 
   return (
     <View
+      className={clsx('flex-1', className)}
       style={[
-        styles.container,
         {
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-          paddingLeft: insets.left,
-          paddingRight: insets.right,
+          paddingTop,
+          paddingBottom,
+          paddingLeft,
+          paddingRight
         },
         style
       ]}
@@ -27,11 +48,5 @@ const SafeAreaView = ({ children, style, ...props }: SafeAreaViewProps) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
 
 export default SafeAreaView;
